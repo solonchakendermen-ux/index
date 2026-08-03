@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Для Ані</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c1020;
+      --ink-soft: #161b2e;
+      --blush: #f3b6a0;
+      --blush-deep: #e8927a;
+      --peach: #ffd4c2;
+      --cream: #f7ebe3;
+      --mist: rgba(247, 235, 227, 0.72);
+      --line: rgba(247, 235, 227, 0.18);
+      --font-display: "Cormorant Garamond", Georgia, serif;
+      --font-body: "Manrope", system-ui, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      min-height: 100%;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--cream);
+      background: var(--ink);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 55% at 70% -10%, rgba(243, 182, 160, 0.28), transparent 55%),
+        radial-gradient(ellipse 60% 45% at 10% 90%, rgba(232, 146, 122, 0.16), transparent 50%),
+        radial-gradient(ellipse 50% 40% at 90% 70%, rgba(120, 140, 180, 0.12), transparent 45%),
+        linear-gradient(165deg, #0a0e1a 0%, #12182b 45%, #0e1322 100%);
+    }
+
+    .atmosphere::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      mix-blend-mode: overlay;
+    }
+
+    .stars {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      border-radius: 50%;
+      background: var(--peach);
+      opacity: 0.35;
+      animation: twinkle var(--d, 3s) ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.15; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.4); }
+    }
+
+    .app {
+      position: relative;
+      z-index: 1;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: clamp(1.5rem, 5vw, 3rem);
+    }
+
+    .screen {
+      width: min(100%, 28rem);
+      text-align: center;
+      display: none;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .screen.is-active {
+      display: block;
+      animation: rise 0.7s ease forwards;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .intro-text {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(1.35rem, 4.5vw, 1.85rem);
+      line-height: 1.35;
+      letter-spacing: -0.01em;
+      color: var(--cream);
+      text-shadow: 0 0 40px rgba(243, 182, 160, 0.3);
+      margin-bottom: 2rem;
+      animation: nameIn 1s ease both;
+    }
+
+    .intro-text em {
+      font-style: italic;
+      color: var(--peach);
+    }
+
+    .name {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(4.2rem, 18vw, 6.5rem);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+      color: var(--cream);
+      text-shadow: 0 0 60px rgba(243, 182, 160, 0.35);
+      margin-bottom: 1.1rem;
+      animation: nameIn 1s ease both;
+    }
+
+    @keyframes nameIn {
+      from { opacity: 0; letter-spacing: 0.12em; filter: blur(6px); }
+      to { opacity: 1; letter-spacing: -0.02em; filter: blur(0); }
+    }
+
+    .lead {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.15rem, 3.5vw, 1.35rem);
+      color: var(--mist);
+      line-height: 1.45;
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.8s 0.25s ease both;
+    }
+
+    .question {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.45rem, 4.5vw, 1.85rem);
+      line-height: 1.25;
+      margin-bottom: 2rem;
+      color: var(--peach);
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .actions {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      min-height: 3.5rem;
+      padding: 110px;
+      margin: -110px;
+      animation: fadeUp 0.8s 0.55s ease both;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 0.85rem 1.75rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:active:not(.btn-no) {
+      transform: scale(0.97);
+    }
+
+    .btn-yes {
+      background: linear-gradient(135deg, var(--blush) 0%, var(--blush-deep) 100%);
+      color: var(--ink);
+      box-shadow: 0 10px 30px rgba(232, 146, 122, 0.35);
+      position: relative;
+      z-index: 2;
+    }
+
+    .btn-yes:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(232, 146, 122, 0.45);
+    }
+
+    .btn-no {
+      --x: 0px;
+      --y: 0px;
+      position: relative;
+      background: transparent;
+      color: var(--mist);
+      border: 1px solid var(--line);
+      padding: 0.8rem 1.5rem;
+      transform: translate(var(--x), var(--y));
+      transition: transform 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
+      z-index: 5;
+      user-select: none;
+    }
+
+    .btn-no:hover,
+    .btn-no:focus {
+      background: rgba(247, 235, 227, 0.06);
+    }
+
+    .btn-primary {
+      width: 100%;
+      margin-top: 0.5rem;
+      background: linear-gradient(135deg, var(--blush) 0%, var(--blush-deep) 100%);
+      color: var(--ink);
+      box-shadow: 0 10px 30px rgba(232, 146, 122, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+    }
+
+    .screen-title {
+      font-family: var(--font-display);
+      font-weight: 600;
+      font-size: clamp(1.8rem, 6vw, 2.35rem);
+      margin-bottom: 0.5rem;
+      color: var(--cream);
+    }
+
+    .screen-sub {
+      font-size: 0.95rem;
+      color: var(--mist);
+      margin-bottom: 1.75rem;
+      line-height: 1.5;
+    }
+
+    .form {
+      display: grid;
+      gap: 1.1rem;
+      text-align: left;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.4rem;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(247, 235, 227, 0.55);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--cream);
+      background: rgba(247, 235, 227, 0.06);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      appearance: none;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(243, 182, 160, 0.55);
+      background: rgba(247, 235, 227, 0.09);
+    }
+
+    .field textarea {
+      min-height: 5.5rem;
+      resize: vertical;
+    }
+
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f7ebe3' d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+    }
+
+    .field select option {
+      background: var(--ink-soft);
+      color: var(--cream);
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.85rem;
+    }
+
+    @media (max-width: 420px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .finale-heart {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--blush);
+      animation: pulse 1.6s ease-in-out infinite;
+      filter: drop-shadow(0 0 18px rgba(243, 182, 160, 0.55));
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    .summary {
+      margin: 1.5rem 0 0;
+      padding: 1.15rem 1.25rem;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .summary-row {
+      display: grid;
+      gap: 0.15rem;
+    }
+
+    .summary-row span {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(247, 235, 227, 0.45);
+    }
+
+    .summary-row strong {
+      font-weight: 500;
+      color: var(--peach);
+      font-size: 1rem;
+    }
+
+    .hint {
+      margin-top: 1.25rem;
+      font-size: 0.82rem;
+      color: rgba(247, 235, 227, 0.45);
+      line-height: 1.4;
+    }
+
+    #confetti {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .piece {
+      position: absolute;
+      top: -12px;
+      width: 8px;
+      height: 10px;
+      border-radius: 2px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div id="confetti" aria-hidden="true"></div>
+
+  <main class="app">
+    <section class="screen is-active" id="screen-intro" aria-label="Музика">
+      <h1 class="intro-text">Для кращого експіріенсу увімкни пісню на фон, бажано:&nbsp;<em>Steve Lacy — Oh Yeah?</em></h1>
+      <button type="button" class="btn btn-primary" id="btn-intro">Далі</button>
+    </section>
+
+    <section class="screen" id="screen-invite" aria-label="Запрошення" hidden>
+      <h1 class="name">Анічка</h1>
+      <p class="lead">Я дуже довго чекав цього моменту&nbsp;— і нарешті хочу сказати</p>
+      <p class="question">Підеш зі мною на&nbsp;побачення?</p>
+      <div class="actions" id="actions">
+        <button type="button" class="btn btn-yes" id="btn-yes">Так</button>
+        <button type="button" class="btn btn-no" id="btn-no">Ні</button>
+      </div>
+    </section>
+
+    <section class="screen" id="screen-form" aria-label="Деталі побачення" hidden>
+      <h2 class="screen-title">Тоді давай сплануємо</h2>
+      <p class="screen-sub">Обери, коли і куди тобі буде найкраще. Я підлаштуюсь.</p>
+      <form class="form" id="date-form" novalidate>
+        <div class="row">
+          <div class="field">
+            <label for="date">Дата</label>
+            <input type="date" id="date" name="date" required />
+          </div>
+          <div class="field">
+            <label for="time">Час</label>
+            <input type="time" id="time" name="time" required value="18:00" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="place">Місце</label>
+          <select id="place" name="place" required>
+            <option value="" disabled selected>Обери варіант</option>
+            <option value="Кав’ярня">Кав’ярня</option>
+            <option value="Прогулянка містом">Прогулянка містом</option>
+            <option value="Кіно">Кіно</option>
+            <option value="Вечеря">Вечеря</option>
+            <option value="Парк / природа">Парк / природа</option>
+            <option value="Сюрприз від тебе">Сюрприз від тебе</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="note">Повідомлення (за бажанням)</label>
+          <textarea id="note" name="note" placeholder="Щось, що хочеш сказати…" maxlength="300"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Підтвердити</button>
+      </form>
+    </section>
+
+    <section class="screen" id="screen-finale" aria-label="Фінал" hidden>
+      <div class="finale-heart" aria-hidden="true">♡</div>
+      <h2 class="screen-title">Дякую, що сказала так</h2>
+      <p class="screen-sub">Чекаю на нашу зустріч. Це для мене справді багато значить.</p>
+      <div class="summary" id="summary"></div>
+      <p class="hint">Зроби скрін — щоб нічого не загубилось :)</p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const intro = document.getElementById("screen-intro");
+      const invite = document.getElementById("screen-invite");
+      const formScreen = document.getElementById("screen-form");
+      const finale = document.getElementById("screen-finale");
+      const btnIntro = document.getElementById("btn-intro");
+      const btnYes = document.getElementById("btn-yes");
+      const btnNo = document.getElementById("btn-no");
+      const form = document.getElementById("date-form");
+      const summary = document.getElementById("summary");
+      const confettiRoot = document.getElementById("confetti");
+      const starsRoot = document.getElementById("stars");
+
+      for (let i = 0; i < 36; i++) {
+        const s = document.createElement("span");
+        s.className = "star";
+        s.style.left = Math.random() * 100 + "%";
+        s.style.top = Math.random() * 100 + "%";
+        s.style.setProperty("--d", 2.5 + Math.random() * 4 + "s");
+        s.style.animationDelay = Math.random() * 3 + "s";
+        starsRoot.appendChild(s);
+      }
+
+      const dateInput = document.getElementById("date");
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      dateInput.min = yyyy + "-" + mm + "-" + dd;
+
+      function showScreen(next) {
+        [intro, invite, formScreen, finale].forEach(function (el) {
+          el.classList.remove("is-active");
+          el.hidden = true;
+        });
+        next.hidden = false;
+        void next.offsetWidth;
+        next.classList.add("is-active");
+      }
+
+      btnIntro.addEventListener("click", function () {
+        showScreen(invite);
+      });
+
+      function burst(count) {
+        const colors = ["#f3b6a0", "#ffd4c2", "#e8927a", "#f7ebe3", "#7ec8a3", "#c9b8f0"];
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement("span");
+          p.className = "piece";
+          p.style.left = Math.random() * 100 + "%";
+          p.style.background = colors[i % colors.length];
+          p.style.width = 6 + Math.random() * 6 + "px";
+          p.style.height = 8 + Math.random() * 8 + "px";
+          p.style.animationDuration = 1.6 + Math.random() * 1.6 + "s";
+          p.style.animationDelay = Math.random() * 0.35 + "s";
+          confettiRoot.appendChild(p);
+          setTimeout(function () { p.remove(); }, 3600);
+        }
+      }
+
+      const RANGE = 100;
+      let offsetX = 0;
+      let offsetY = 0;
+      let busyUntil = 0;
+
+      function homeCenter() {
+        const r = btnNo.getBoundingClientRect();
+        return {
+          x: r.left + r.width / 2 - offsetX,
+          y: r.top + r.height / 2 - offsetY,
+        };
+      }
+
+      function applyOffset(x, y) {
+        offsetX = x;
+        offsetY = y;
+        btnNo.style.setProperty("--x", x + "px");
+        btnNo.style.setProperty("--y", y + "px");
+      }
+
+      function escapeNo(e) {
+        if (e && e.cancelable) e.preventDefault();
+        if (Date.now() < busyUntil) return;
+        busyUntil = Date.now() + 130;
+
+        const pointerX =
+          e && e.touches && e.touches[0]
+            ? e.touches[0].clientX
+            : e && typeof e.clientX === "number"
+              ? e.clientX
+              : 0;
+        const pointerY =
+          e && e.touches && e.touches[0]
+            ? e.touches[0].clientY
+            : e && typeof e.clientY === "number"
+              ? e.clientY
+              : 0;
+
+        const home = homeCenter();
+
+        // Pick the point on the 100px circle farthest from the cursor
+        let bestX = RANGE;
+        let bestY = 0;
+        let bestDist = -1;
+        for (let i = 0; i < 24; i++) {
+          const angle = (Math.PI * 2 * i) / 24;
+          const tx = Math.cos(angle) * RANGE;
+          const ty = Math.sin(angle) * RANGE;
+          const d = Math.hypot(home.x + tx - pointerX, home.y + ty - pointerY);
+          if (d > bestDist) {
+            bestDist = d;
+            bestX = tx;
+            bestY = ty;
+          }
+        }
+
+        const jitter = ((Math.random() - 0.5) * Math.PI) / 10;
+        const dist = RANGE * (0.85 + Math.random() * 0.15);
+        const baseAngle = Math.atan2(bestY, bestX) + jitter;
+        applyOffset(Math.cos(baseAngle) * dist, Math.sin(baseAngle) * dist);
+      }
+
+      btnNo.addEventListener("mouseenter", escapeNo);
+      btnNo.addEventListener("click", escapeNo);
+      btnNo.addEventListener("touchstart", escapeNo, { passive: false });
+
+      btnYes.addEventListener("click", function () {
+        burst(48);
+        showScreen(formScreen);
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          return;
+        }
+
+        const dateVal = dateInput.value;
+        const timeVal = document.getElementById("time").value;
+        const placeVal = document.getElementById("place").value;
+        const noteVal = document.getElementById("note").value.trim();
+
+        var dateLabel = dateVal;
+        try {
+          dateLabel = new Date(dateVal + "T12:00:00").toLocaleDateString("uk-UA", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+          });
+        } catch (_) {}
+
+        const rows = [
+          ["Дата", dateLabel],
+          ["Час", timeVal],
+          ["Місце", placeVal],
+        ];
+        if (noteVal) rows.push(["Повідомлення", noteVal]);
+
+        summary.innerHTML = rows
+          .map(function (row) {
+            return '<div class="summary-row"><span>' + row[0] + "</span><strong>" + escapeHtml(row[1]) + "</strong></div>";
+          })
+          .join("");
+
+        burst(64);
+        showScreen(finale);
+      });
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+    })();
+  </script>
+</body>
+</html>
